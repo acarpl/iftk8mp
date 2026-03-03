@@ -3,29 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBT Informatika - Pengolahan Data</title>
+<title>CBT Informatika - Evaluasi</title>
 
 <style>
 body{
     font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    background:linear-gradient(135deg,#2193b0,#6dd5ed);
     margin:0;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
-
 .exam-box{
     background:white;
     width:95%;
-    max-width:850px;
+    max-width:900px;
     padding:25px;
     border-radius:15px;
     box-shadow:0 15px 40px rgba(0,0,0,0.3);
     position:relative;
 }
-
 .timer{
     position:absolute;
     top:15px;
@@ -33,18 +31,15 @@ body{
     font-weight:bold;
     color:#e74c3c;
 }
-
 .progress{
     text-align:center;
     font-weight:bold;
     margin-bottom:10px;
 }
-
 .question{
     margin:15px 0;
     font-weight:600;
 }
-
 .options label{
     display:block;
     margin:6px 0;
@@ -53,14 +48,12 @@ body{
     border-radius:8px;
     cursor:pointer;
 }
-
 textarea,input[type=text]{
     width:100%;
     padding:8px;
     border-radius:8px;
     border:1px solid #ccc;
 }
-
 button{
     padding:8px 16px;
     border:none;
@@ -69,22 +62,18 @@ button{
     font-weight:bold;
     margin:5px 0;
 }
-
 .prev{background:#95a5a6;color:white;}
 .next{background:#3498db;color:white;}
 .submit{background:#2ecc71;color:white;width:100%;}
-
 .result{
     margin-top:20px;
     background:#f9f9f9;
     padding:15px;
     border-radius:10px;
-    max-height:350px;
+    max-height:400px;
     overflow:auto;
 }
-
-.correct{color:green;}
-.wrong{color:red;}
+h3{margin-top:15px;}
 </style>
 </head>
 
@@ -92,8 +81,7 @@ button{
 
 <div class="exam-box">
 <div class="timer">⏳ <span id="time">25:00</span></div>
-<div class="progress">Soal <span id="current">1</span> dari 31</div>
-
+<div class="progress">Soal <span id="current">1</span> dari 20</div>
 <div id="questionContainer"></div>
 
 <button class="prev" onclick="prevQuestion()">← Prev</button>
@@ -105,96 +93,32 @@ button{
 
 <script>
 
-const questions = [
+const questions=[
 
-/* 1–15 PG */
+{type:"pg",q:"Data adalah ...",options:["Fakta mentah","Grafik","Kesimpulan","Program"],answer:0},
+{type:"pg",q:"Data kualitatif berbentuk ...",options:["Angka","Kategori","Rumus","Nilai"],answer:1},
+{type:"pg",q:"Data kuantitatif diskrit contohnya ...",options:["Tinggi badan","Jumlah siswa","Warna","Jenis kelamin"],answer:1},
+{type:"pg",q:"Langkah pertama pengolahan data adalah ...",options:["Menganalisis","Menyajikan","Mengumpulkan","Menyimpulkan"],answer:2},
+{type:"pg",q:"Diagram batang cocok untuk ...",options:["Perbandingan data","Cerita","Kode","Rumus"],answer:0},
+{type:"pg",q:"Rumus rata-rata di Excel adalah ...",options:["=SUM()","=AVERAGE()","=MAX()","=MIN()"],answer:1},
+{type:"pg",q:"Fungsi SUM digunakan untuk ...",options:["Rata-rata","Jumlah","Nilai terbesar","Filter"],answer:1},
+{type:"pg",q:"Sorting berarti ...",options:["Menghapus","Mengurutkan","Menyaring","Menggambar"],answer:1},
+{type:"pg",q:"Filter berfungsi untuk ...",options:["Menyaring data","Menjumlahkan","Menghapus file","Mengurutkan otomatis"],answer:0},
+{type:"pg",q:"Workbook adalah ...",options:["Cell","Sheet","Kumpulan worksheet","Baris"],answer:2},
 
-{type:"pg",q:"Data adalah ...",
-options:["Kumpulan fakta mentah","Kesimpulan akhir","Grafik","Program komputer"],answer:0},
+{type:"bs",q:"Data harus akurat agar analisis benar.",answer:true},
+{type:"bs",q:"Worksheet adalah kumpulan workbook.",answer:false},
 
-{type:"pg",q:"Rata-rata dari 70,80,90 adalah...",
-options:["75","80","85","90"],answer:1},
+{type:"isian",q:"Rumus untuk menjumlahkan A1 sampai A5 adalah ...",answer:"=sum"},
+{type:"isian",q:"Pertemuan baris dan kolom disebut ...",answer:"cell"},
 
-{type:"pg",q:"Data kualitatif adalah data berbentuk...",
-options:["Angka","Kategori","Rumus","Nilai rata-rata"],answer:1},
+{type:"essay",q:"Jelaskan langkah pengolahan data dari awal sampai akhir!"},
+{type:"essay",q:"Jelaskan manfaat menggunakan rumus otomatis di Excel!"},
 
-{type:"pg",q:"Contoh data kuantitatif diskrit adalah...",
-options:["Tinggi badan","Jumlah siswa","Warna","Jenis kelamin"],answer:1},
-
-{type:"pg",q:"Dari tabel nilai, siswa lulus jika ≥75. Jika nilai 80 maka...",
-options:["Tidak lulus","Lulus","Remedial","Tidak diketahui"],answer:1},
-
-{type:"pg",q:"Metode pengumpulan data dengan bertanya langsung disebut...",
-options:["Observasi","Wawancara","Dokumentasi","Eksperimen"],answer:1},
-
-{type:"pg",q:"Diagram batang cocok untuk...",
-options:["Perbandingan data","Cerita panjang","Rumus","Kode"],answer:0},
-
-{type:"pg",q:"Aplikasi pengolah angka adalah...",
-options:["Word","Excel","Paint","PowerPoint"],answer:1},
-
-{type:"pg",q:"Rumus untuk mencari rata-rata di Excel adalah...",
-options:["=SUM()","=AVERAGE()","=MAX()","=MIN()"],answer:1},
-
-{type:"pg",q:"Cell pada Excel adalah...",
-options:["Kumpulan sheet","Pertemuan baris dan kolom","Menu","File"],answer:1},
-
-{type:"pg",q:"Data harus akurat agar...",
-options:["Tidak salah analisis","Banyak warna","Lebih panjang","Cepat rusak"],answer:0},
-
-{type:"pg",q:"Data sebelum dibuat grafik harus...",
-options:["Diurutkan dan dirapikan","Dihapus","Dicetak","Disimpan saja"],answer:0},
-
-{type:"pg",q:"Fungsi filter digunakan untuk...",
-options:["Menghapus file","Menyaring data","Mewarnai","Menggambar"],answer:1},
-
-{type:"pg",q:"Langkah pengolahan data pertama adalah...",
-options:["Menyajikan","Mengumpulkan","Menganalisis","Menyimpulkan"],answer:1},
-
-{type:"pg",q:"Sorting data berarti...",
-options:["Menghapus data","Mengurutkan data","Menjumlahkan","Menggandakan"],answer:1},
-
-/* 16–20 Benar Salah */
-
-{type:"bs",q:"Data kualitatif berbentuk angka.",answer:false},
-
-{type:"bs",q:"Workbook adalah kumpulan worksheet.",answer:true},
-
-{type:"bs",q:"Diagram lingkaran cocok untuk perbandingan kategori.",answer:true},
-
-{type:"bs",q:"Filter berfungsi mengurutkan data.",answer:false},
-
-{type:"bs",q:"Analisis data bertujuan menarik kesimpulan.",answer:true},
-
-/* 21 Menjodohkan */
-
-{type:"match",
-q:"Cocokkan rumus dengan fungsinya",
-pairs:[
-["SUM","Menjumlahkan data"],
-["MAX","Mencari nilai terbesar"],
-["MIN","Mencari nilai terkecil"]
-]},
-
-/* 22–26 Isian */
-
-{type:"isian",q:"Tuliskan rumus SUM untuk menjumlahkan A1 sampai A5",answer:"=SUM(A1:A5)"},
-
-{type:"isian",q:"Tanda '-' pada Excel digunakan untuk operasi ...",answer:"pengurangan"},
-
-{type:"isian",q:"Data sebelum grafik sebaiknya disusun dalam bentuk ...",answer:"tabel"},
-
-{type:"isian",q:"Langkah akhir pengolahan data adalah ...",answer:"menyimpulkan"},
-
-{type:"isian",q:"Fitur untuk menyaring data disebut ...",answer:"filter"},
-
-/* 27–31 Essay */
-
-{type:"essay",q:"Jelaskan pentingnya pengorganisasian data!"},
-{type:"essay",q:"Jelaskan fungsi dan contoh aplikasi pengolah angka!"},
-{type:"essay",q:"Jelaskan langkah menghitung rata-rata di Excel!"},
-{type:"essay",q:"Jelaskan cara mengolah dan menyajikan data!"},
-{type:"essay",q:"Jelaskan keunggulan rumus otomatis di Excel!"}
+{type:"pg",q:"Data sebelum grafik harus disusun dalam bentuk ...",options:["Tabel","Cerita","Kode","Gambar"],answer:0},
+{type:"pg",q:"MAX berfungsi untuk ...",options:["Nilai terkecil","Jumlah","Nilai terbesar","Rata-rata"],answer:2},
+{type:"pg",q:"MIN berfungsi untuk ...",options:["Nilai terkecil","Nilai terbesar","Jumlah","Filter"],answer:0},
+{type:"pg",q:"Analisis data bertujuan untuk ...",options:["Menggambar","Menyimpulkan informasi","Menghapus data","Mengurutkan"],answer:1}
 
 ];
 
@@ -211,64 +135,34 @@ q.options.forEach((opt,i)=>{
 html+=`<label><input type="radio" onclick="saveAnswer(${i})"> ${opt}</label>`;
 });
 }
-
 if(q.type==="bs"){
 html+=`<label><input type="radio" onclick="saveAnswer(true)"> Benar</label>`;
 html+=`<label><input type="radio" onclick="saveAnswer(false)"> Salah</label>`;
 }
-
 if(q.type==="isian"){
 html+=`<input type="text" oninput="saveAnswer(this.value)">`;
 }
-
 if(q.type==="essay"){
 html+=`<textarea oninput="saveAnswer(this.value)"></textarea>`;
-}
-
-if(q.type==="match"){
-q.pairs.forEach((p,i)=>{
-html+=`${p[0]} = <input type="text" oninput="saveMatch(${i},this.value)"><br>`;
-});
 }
 
 document.getElementById("questionContainer").innerHTML=html;
 }
 
-function saveAnswer(val){
-userAnswers[currentQuestion]=val;
-}
-
-function saveMatch(index,val){
-if(!userAnswers[currentQuestion])userAnswers[currentQuestion]={};
-userAnswers[currentQuestion][index]=val;
-}
-
-function nextQuestion(){
-if(currentQuestion<questions.length-1){currentQuestion++;loadQuestion();}
-}
-
-function prevQuestion(){
-if(currentQuestion>0){currentQuestion--;loadQuestion();}
-}
+function saveAnswer(val){ userAnswers[currentQuestion]=val; }
+function nextQuestion(){ if(currentQuestion<questions.length-1){currentQuestion++;loadQuestion();}}
+function prevQuestion(){ if(currentQuestion>0){currentQuestion--;loadQuestion();}}
 
 function submitQuiz(){
 let score=0;
-let autoTotal=26; 
+let autoTotal=16;
 
 questions.forEach((q,i)=>{
 if(q.type==="pg"||q.type==="bs"){
 if(userAnswers[i]==q.answer)score++;
 }
 if(q.type==="isian"){
-if((userAnswers[i]||"").toLowerCase().includes(q.answer.toLowerCase()))score++;
-}
-if(q.type==="match"){
-let correct=true;
-q.pairs.forEach((p,index)=>{
-if(!userAnswers[i]||!userAnswers[i][index]||
-!userAnswers[i][index].toLowerCase().includes(p[1].toLowerCase()))correct=false;
-});
-if(correct)score++;
+if((userAnswers[i]||"").toLowerCase().includes(q.answer))score++;
 }
 });
 
@@ -276,11 +170,51 @@ let nilai=Math.round((score/autoTotal)*100);
 
 document.getElementById("result").innerHTML=
 `<h2>Nilai Otomatis: ${nilai}</h2>
-<p>Essay diperiksa manual oleh guru.</p>
-<h3>Ringkasan Materi:</h3>
-Data adalah fakta mentah. Pengolahan data meliputi: mengumpulkan, mengolah, menyajikan, dan menyimpulkan.
-Excel digunakan untuk menghitung otomatis dengan rumus seperti SUM, AVERAGE, MAX, MIN.
-Filter untuk menyaring data, Sorting untuk mengurutkan data.
+<p>Essay dinilai manual.</p>
+
+<h3>📘 RANGKUMAN MATERI LENGKAP UNTUK EVALUASI</h3>
+
+<b>1. Konsep Data</b><br>
+Data adalah fakta mentah yang belum diolah. Data bisa berupa angka, teks, simbol, atau gambar.
+
+<b>2. Jenis Data</b><br>
+- Kualitatif → berbentuk kategori (warna, jenis kelamin)<br>
+- Kuantitatif → berbentuk angka<br>
+   • Diskrit → jumlah siswa<br>
+   • Kontinu → tinggi badan
+
+<b>3. Langkah Pengolahan Data</b><br>
+1. Mengumpulkan data<br>
+2. Mengolah data<br>
+3. Menyajikan data (tabel/grafik)<br>
+4. Menganalisis data<br>
+5. Menyimpulkan
+
+<b>4. Penyajian Data</b><br>
+- Tabel<br>
+- Diagram batang (perbandingan)<br>
+- Diagram lingkaran (persentase)
+
+<b>5. Microsoft Excel</b><br>
+- Workbook → file Excel<br>
+- Worksheet → lembar kerja<br>
+- Cell → pertemuan baris dan kolom
+
+<b>6. Rumus Penting Excel</b><br>
+=SUM() → menjumlahkan<br>
+=AVERAGE() → rata-rata<br>
+=MAX() → nilai terbesar<br>
+=MIN() → nilai terkecil
+
+<b>7. Fitur Penting</b><br>
+- Sorting → mengurutkan data<br>
+- Filter → menyaring data
+
+<b>8. Manfaat Rumus Otomatis</b><br>
+- Menghemat waktu<br>
+- Mengurangi kesalahan<br>
+- Cepat menghitung data banyak<br>
+- Hasil lebih akurat
 `;
 }
 
@@ -303,6 +237,5 @@ submitQuiz();
 },1000);
 
 </script>
-
 </body>
 </html>
